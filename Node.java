@@ -23,7 +23,22 @@ class Node{
 		node.next = newNode;
 	}
 	
-	
+	//delete
+	void delete(Node head, int d)
+	{
+		//runner technique
+		Node n = head;
+		while(n.next != null)
+		{
+			if(n.next.data == d)
+			{
+				n.next = n.next.next;	
+				
+			}
+			n = n.next;
+		}
+		
+	}
 
 	void printList()
 	{
@@ -45,8 +60,15 @@ class Node{
 		n.insert(13);
 		n.insert(17);
 		n.insert(19);
-
+		System.out.println("List:");
 		n.printList();
+		System.out.println();
+		System.out.println();
+		n.delete(n, 17);
+		System.out.println("After deleting 17 from the list:");
+		
+		n.printList();
+		
 		
 	}
 }
