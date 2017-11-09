@@ -1,0 +1,30 @@
+/*
+*	
+* Return Kth to Last: Implement an algorithm to find the kth to last * element of a singly linked list.
+*
+*/
+
+
+	void return_Kth_to_Last(Node node, int d)
+	{
+		Node head = this;
+		while(node.next != null)	
+		{
+			node = node.next;
+			if(node.data == d)
+			{
+				head.next = node;
+				break;
+			
+			}
+		}
+		
+		while(head.next!=null)
+		{
+			
+			head = head.next;
+			
+			System.out.print(head.data + " ");
+		}
+		
+	}
