@@ -1,6 +1,10 @@
 /*
-	Partition: Write code to partition a linked list around a value x, such that all nodes less than x come before all nodes greater than or equal to x. If x is contained within the list, the values of x only need to be after the elements less than x. The partition element x can appear anywhere in the "right partition"; it does not need to appear between the left and right partitions.
+	Partition: Write code to partition a linked list aroung a value x, such that all nodes less than x come before all nodes greater than or equal to x. If x is contained within the list, the values of x only need to be after the elements less than x. The partition element x can appear anywhere in the "right partition"; it does not need to appear between the left and right partitions.
 
+Example:
+
+Input: 3, 5, 8, 5, 10, 2, 1 [partition = 5]
+Output: 3, 1, 2, 10, 5, 5, 8
 */
 
 public class Partition
@@ -9,7 +13,7 @@ public class Partition
 	{
 		int data;
 		Node next;
-
+		
 		Node(int d)
 		{
 			data = d;
@@ -17,39 +21,48 @@ public class Partition
 		}
 	}
 
-	 Node head;
-	
-	void printList(Node head)
-	{
-		if(head == null)
-		{
-			System.out.println("List is empty");
-		}
+	Node head;
 
+	void appendToTail(Node head, int d)
+	{
 		Node n = head;
+		Node insert = new Node(d);
 		
-		while(n != null)
+		while(n.next != null)
 		{
-			System.out.print(n.data+ " ");
 			n = n.next;
 		}
-		System.out.println();
-
+		n.next = insert;
 	}
+	
+	boolean search(Node head, int value)
+	{
+		Node n = head;
 
-	Node partition(Node node, int x)
+		while(n != null)
+		{
+			if(n.data == value)
+			{
+				return true;
+			}
+			n = n.next;
+		}
+		return false;
+	}
+	
+	Node partition(Node node, int p_Value)	//p_Value: partition value
 	{
 		Node beforeStart = null;
 		Node beforeEnd = null;
 		Node afterStart = null;
 		Node afterEnd = null;
 		
-		while(node != null)	
+		while(node != null)
 		{
 			Node next = node.next;
 			node.next = null;
-			
-			if(node.data < x)
+
+			if(node.data < p_Value)
 			{
 				if(beforeStart == null)
 				{
@@ -76,8 +89,8 @@ public class Partition
 				}
 			}
 			node = next;
-		}	
-		
+		}
+
 		if(beforeStart == null)
 		{
 			return afterStart;
@@ -87,49 +100,49 @@ public class Partition
 		return beforeStart;
 	}
 	
+	void printList(Node head)
+	{
+		Node n = head;
+		
+		while(n != null)
+		{
+			System.out.print(n.data+" ");
+			n = n.next;
+		}
+		System.out.println();
+	}
+
 	public static void main(String[] args)
 	{
-		Partition partition = new Partition();
+		Partition p = new Partition();
 		
-		partition.head = new Node(3);
+		p.head = new Node(3);
 		
-		Node second = new Node(5);
+		p.appendToTail(p.head, 5);
+		p.appendToTail(p.head, 8);
+		p.appendToTail(p.head, 5);
+		p.appendToTail(p.head, 10);
+		p.appendToTail(p.head, 2);
+		p.appendToTail(p.head, 1);
 		
-		Node third = new Node(8);
+		System.out.println("Input: ");
+		p.printList(p.head);
 		
-		Node fourth = new Node(5);
+		int partition_Value = 8;
 		
-		Node fifth = new Node(10);
-
-		Node sixth = new Node(2);
+		if(p.search(p.head, partition_Value))
+		{
+			Node new_head_node = p.partition(p.head, partition_Value);
+			System.out.println("Output: ");
+			p.printList(new_head_node);	
+		}
 		
-		Node seventh = new Node(1);
-
-		partition.head.next = second;
-		
-		second.next = third;
-			
-		third.next = fourth;
-		
-		fourth.next = fifth;
-		
-		fifth.next = sixth;
-		
-		sixth.next = seventh;
-
-		System.out.println("Given List:");
-		
-		partition.printList(partition.head);
-		
-		//System.out.println();
-		//partition.partitionList(partition.head, 5);
-		
-		Node n = partition.partition(partition.head, 5);
-		
-		System.out.println("After partition: ");
-
-		partition.printList(n);
+		else
+		{
+			System.out.println("Element does not exist");
+		}
 		
 		
 	}
+	
 }
