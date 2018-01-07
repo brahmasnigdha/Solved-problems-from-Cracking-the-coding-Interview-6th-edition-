@@ -65,6 +65,8 @@ public class BinaryTree
 	public static void main(String[] args)
 	{
 		BinaryTree tree = new BinaryTree();
+
+		//////////////////////////////TREE//////////////////////////////
 		
 		tree.root = new Node(1);	
 		
@@ -80,7 +82,7 @@ public class BinaryTree
 		
 		Node root_right_right = tree.addRightChild(7, root_right);
 
-		
+		///////////////////////////////TRAVERSALS/////////////////////////
 		System.out.print("Preorder Traversal: ");
 		tree.preorderTraversal(tree.root);
 		System.out.println();
