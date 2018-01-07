@@ -1,3 +1,6 @@
+import java.util.Stack;
+import java.util.LinkedList;
+
 public class BinaryTree
 {
 	static class Node
@@ -29,7 +32,8 @@ public class BinaryTree
 		node.right = newChild;
 		return node.right;
 	}
-	//preorder traversal
+	/////////////////////////////TRAVERSAL METHODS/////////////////////////
+	/////////////////////////preorder traversal
 	void preorderTraversal(Node node)
 	{
 		if(node != null)
@@ -40,7 +44,36 @@ public class BinaryTree
 		}
 	}	
 	
-	//inorder traversal
+	//Iterative preorder traversal
+	LinkedList<Integer> iterativePreorderTraversal(Node node)
+	{
+		Stack<Node> stack = new Stack<Node>();
+		LinkedList<Integer> output = new LinkedList<Integer>();
+		if(node == null)
+		{
+			return output;
+		}
+		stack.push(node);
+		
+		while(!stack.isEmpty())
+		{
+			Node tmp = stack.pop();
+			output.add(tmp.data);
+			
+			if(tmp.right != null)
+			{
+				stack.push(tmp.right);
+			}
+			if(tmp.left != null)
+			{
+				stack.push(tmp.left);
+			}
+		}
+		
+		return output;
+	}
+	
+	//////////////////////////inorder traversal
 	void inorderTraversal(Node node)
 	{
 		if(node != null)
@@ -51,7 +84,45 @@ public class BinaryTree
 		}
 	}
 
-	//postorder traversal
+	//non-recursive inorder traversal
+	LinkedList<Integer> non_recurse_inorderTraversal(Node node)
+	{
+		LinkedList<Integer> result = new LinkedList<Integer>();
+		
+		Stack<Node> stack = new Stack<Node>();
+		
+		Node currentNode = node;
+		
+		boolean done = false;
+		
+		while(!done)	
+		{
+			if(currentNode != null)
+			{
+				stack.push(currentNode);
+				currentNode = currentNode.left;
+			}
+			else
+			{
+				if(stack.isEmpty())
+				{
+					done = true;
+				}
+				else
+				{
+					currentNode = stack.pop();	
+					result.add(currentNode.data);
+					currentNode = currentNode.right;
+				}
+
+			}
+		
+		}
+		
+		return result;
+	}
+	
+	///////////////////////////postorder traversal
 	void postorderTraversal(Node node)
 	{
 		if(node != null)
@@ -92,7 +163,13 @@ public class BinaryTree
 		
 		System.out.print("\nPostorder Traversal: ");
 		tree.postorderTraversal(tree.root);
+		
+		System.out.println("\nIterative Preorder Traversal: "+tree.iterativePreorderTraversal(tree.root));
+		
+		System.out.println("Non-Recursive Inorder Traversl: "+tree.non_recurse_inorderTraversal(tree.root));
 	}
+	
+		
 	
 	
 }
