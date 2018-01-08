@@ -1,5 +1,7 @@
 import java.util.Stack;
 import java.util.LinkedList;
+import java.util.Queue;
+import java.util.ArrayList;
 
 public class BinaryTree
 {
@@ -94,7 +96,12 @@ public class BinaryTree
 		Node currentNode = node;
 		
 		boolean done = false;
-		
+
+		if(node == null)		
+		{
+			return result;
+		}
+
 		while(!done)	
 		{
 			if(currentNode != null)
@@ -133,6 +140,110 @@ public class BinaryTree
 		}
 	}
 
+	//////////////////////////Level Order traversal
+	/*
+		Level order traversal is defined as follows:
+		
+		-> Visit the root.
+		-> While traversing level 1, keep all the elements at level l+1 in queue.
+		-> Go to the next level and visit all the nodes at that level.
+		-> Repeat the steps until all the levels are completed
+	*/
+	
+	// Method to find the height of the tree
+	
+	int height(Node node)
+	{
+		
+		if(node == null)
+		{
+			return 0;
+		}
+		else
+		{
+			int left_height = height(node.left);
+			int right_height = height(node.right);
+			
+			if(left_height > right_height)
+			{
+				return (left_height+1);
+			}
+			else
+			{
+				return (right_height+1);
+			}
+		}
+	}
+	
+	
+	//Level order traversal method
+	//
+	
+	void printLevelOrder(Node node) // geeks for geeks
+	{
+		int h = height(node);
+		
+		for(int i = 1; i <= h ; i++)
+		{
+			levelOrderTraversal(node, i);
+		}
+	}
+	
+	void levelOrderTraversal(Node node, int level) //Geeks for geeks
+	{
+		if(node == null)
+		{
+			return;
+		}
+		
+		if(level == 1)
+		{
+			System.out.print(node.data+" ");
+		}
+		
+		else if(level > 1)
+		{
+			levelOrderTraversal(node.left, level - 1);
+			levelOrderTraversal(node.right, level - 1);
+		}
+	}
+
+	// Levelorder traversal using queue
+	ArrayList<Integer> levelOrderTraversal2(Node node, int height)		
+	{
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		Queue<Node> q = new LinkedList<Node>();
+		
+		if(node == null)
+		{
+			return result;
+		}
+		
+		int level = height;
+		
+		q.add(node);
+		
+		while(!q.isEmpty())
+		{
+			Node temp = q.poll();
+			
+			result.add(temp.data);			
+			
+			if(temp.left != null && level >=1)
+			{
+				q.add(temp.left);
+			}
+			
+			if(temp.right != null && level >=1)
+			{
+				q.add(temp.right);
+			}
+			level--;
+		}
+		
+		return result;
+	}
+	
 	public static void main(String[] args)
 	{
 		BinaryTree tree = new BinaryTree();
@@ -167,6 +278,12 @@ public class BinaryTree
 		System.out.println("\nIterative Preorder Traversal: "+tree.iterativePreorderTraversal(tree.root));
 		
 		System.out.println("Non-Recursive Inorder Traversl: "+tree.non_recurse_inorderTraversal(tree.root));
+		
+		System.out.print("Level Order Traversal: ");
+		tree.printLevelOrder(tree.root);
+		System.out.println();
+		
+		System.out.println("Level Order traversal using queue: "+ tree.levelOrderTraversal2(tree.root, tree.height(tree.root)));
 	}
 	
 		
