@@ -1,11 +1,11 @@
 /*
-	Problem 16: Give an algorithm for finding the number of leaves in the binary tree without using recursion
+Problem-22: Give an algorithm for finding the number of levels. The only change is, we need to keep track of the sums as well.
 */
 
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.LinkedList;
 
-public class findLeaves
+public class FindLevels
 {
 	static class Node
 	{
@@ -21,7 +21,8 @@ public class findLeaves
 		}
 	}
 	
-	Node root;
+	Node root;	
+	
 	///////////////////////////Method for Adding Left Child////////////////////////
 	Node addLeftChild(int data, Node node)
 	{
@@ -37,61 +38,61 @@ public class findLeaves
 		node.right = newChild;
 		return node.right;
 	}
-	
-	/////////////////////////////////////Problem SOLUTION///////////////////////////////
-
-	int countLeaves(Node node)
-	{
-		Queue<Node> queue = new LinkedList<Node>();
-
-		int count = 0;
+//////////////////////////////////problem Solution//////////////////////////////////////
 		
-		if(node == null)				
+	int findLevelsMaxSum(Node node)
+	{
+		int max_sum = 0, current_sum=0;
+		if(node == null)
 		{
 			return 0;
 		}
+		Queue<Node> queue = new LinkedList<Node>();
 		
 		queue.add(node);
 		
 		while(!queue.isEmpty())
 		{
 			Node temp = queue.poll();
-			
-			if(temp.left == null && temp.right == null)
+			if(temp != null)
 			{
-				count++;
+				
+				if(temp.left != null)
+				{
+					queue.add(temp.left);
+					current_sum = temp.left.data + temp.right.data;
+					
+				}
+				if(temp.right != null)
+				{
+					queue.add(temp.right);
+					current_sum = temp.left.data + temp.right.data;
+				}
+				
+
 			}
-			
-			if(temp.left != null)
+			else
 			{
-				queue.add(temp.left);
-			}
-			
-			if(temp.right != null)
-			{
-				queue.add(temp.right);
+				if(current_sum > max_sum)
+				{
+					max_sum = current_sum;
+				}
+				current_sum = 0;
+				if(!queue.isEmpty())
+				{
+					queue.add(null);
+				}
 			}
 		}
-		
-		return count;		
-	}
-///////////////////////////////////////////Traverse Tree////////////////////////////////////////
-	
-	void traverse(Node node)
-	{
-		if(node != null)
-		{
-			System.out.print(node.data+" ");
-			traverse(node.left);
-			traverse(node.right);
-		}
+		return max_sum;
 	}
 
-	//////////////////////////////////////////////MAIN//////////////////////////////////////////////
-	
+
+//////////////////////////////////////////MAIN/////////////////////////////////////////////
+
 	public static void main(String[] args)
 	{
-		findLeaves tree = new findLeaves();
+		FindLevels tree = new FindLevels();
 
 		tree.root = new Node(1);	
 		
@@ -106,12 +107,7 @@ public class findLeaves
 		Node root_right_left = tree.addLeftChild(6, root_right);
 		
 		Node root_right_right = tree.addRightChild(7, root_right);
-
-		System.out.print("Tree: ");
-		tree.traverse(tree.root);
-		System.out.println();
-		System.out.print("Number of leaves: "+tree.countLeaves(tree.root));
-		System.out.println();
+		
+		System.out.println("Level Max sum: "+tree.findLevelsMaxSum(tree.root));
 	}
-	
 }

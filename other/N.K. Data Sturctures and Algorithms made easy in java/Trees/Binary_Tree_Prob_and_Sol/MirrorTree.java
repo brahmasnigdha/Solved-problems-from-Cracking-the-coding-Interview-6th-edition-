@@ -1,8 +1,14 @@
 /*
-	Problem-20: Give an algorithm for finding the diameter of the binary tree. The diameter of a tree (sometimes called the width) is the number of nodes on the longest path between two leaves in the tree.
+	Problem-27: Give an algorithm for converting a tree to its mirror. Mirror of a tree is another tree with left and right children of all non-leaf nodes interchanged. The trees below are mirrors to each other.
+
+
+	1				1
+    2	    3			     3      2
+4      5                                  5     4
+
 */
 
-public class BinaryTreeDiameter
+public class MirrorTree
 {
 	static class Node
 	{
@@ -17,8 +23,9 @@ public class BinaryTreeDiameter
 			right = null;
 		}
 	}
+		
+	Node root;	
 	
-	Node root;
 	///////////////////////////Method for Adding Left Child////////////////////////
 	Node addLeftChild(int data, Node node)
 	{
@@ -34,31 +41,23 @@ public class BinaryTreeDiameter
 		node.right = newChild;
 		return node.right;
 	}
-	
-	/////////////////////////////////////Problem Solution///////////////////////////////
 
-// Solution: N.K. Data Structures and Algorithms
-	public int diameterOfTree(Node node)
+	///////////////////////Problem Solution//////////////////////////
+	
+	Node mirror_BinaryTree(Node node)
 	{
-		if(node == null)
+		if(node != null)
 		{
-			return 0;
+			mirror_BinaryTree(node.left);
+			mirror_BinaryTree(node.right);
+			Node temp = node.left;
+			node.left = node.right;
+			node.right = temp;			
 		}
-		int left = diameterOfTree(node.left);
-		int right = diameterOfTree(node.right);
-		int diameter = 0;
-		
-		if(left + right > diameter)
-		{
-			diameter = left + right;
-		}
-		return Math.max(left, right)+1;
+		return node;	
 	}
 	
-	
-///////////////////////////////////////////Traverse Tree////////////////////////////////////////
-	
-	static void traverse(Node node)
+	void traverse(Node node)
 	{
 		if(node != null)
 		{
@@ -66,12 +65,13 @@ public class BinaryTreeDiameter
 			traverse(node.left);
 			traverse(node.right);
 		}
+		//System.out.println();
 	}
-/////////////////////////////////////////////MAIN//////////////////////////////////////////////
-	
+
+	////////////////////////////////MAIN/////////////////////////////////
 	public static void main(String[] args)
 	{
-		BinaryTreeDiameter tree = new BinaryTreeDiameter();
+		MirrorTree tree = new MirrorTree();
 
 		tree.root = new Node(1);	
 		
@@ -87,13 +87,16 @@ public class BinaryTreeDiameter
 		
 		Node root_right_right = tree.addRightChild(7, root_right);
 		
-		Node root_right_right1 = tree.addRightChild(7, root_right_right);
-
 		System.out.print("Tree: ");
-		tree.traverse(tree.root);
-		System.out.println();
-		s
-		System.out.println("Diameter of the tree: "+ tree.diameterOfTree(tree.root));	
 		
+		tree.traverse(tree.root);
+		
+		System.out.println();
+		
+		Node new_tree = tree.mirror_BinaryTree(tree.root);
+		
+		System.out.print("Mirror Tree: ");
+		
+		tree.traverse(tree.root);		
 	}
 }
